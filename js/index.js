@@ -1,30 +1,38 @@
 // ITERATION 1
 
 function updateSubtotal(product) {
-  console.log('Calculating subtotal, yey!');
+  const singlePrice = product.querySelector('.price span').innerText;
+  const quantity = product.querySelector('.quantity input').value;
+  const subtotal = product.querySelector('.subtotal span');
+  const result = singlePrice * quantity;
 
-  //... your code goes here
+  subtotal.innerText = result;
+
+  return subtotal;
 }
 
+const myProduct = document.querySelector('.product');
+const myButton = document.querySelector('#calculate');
+
+myButton.addEventListener('click', calculateAll);
+
 function calculateAll() {
-  // code in the following two lines is added just for testing purposes.
-  // it runs when only iteration 1 is completed. at later point, it can be removed.
-  const singleProduct = document.querySelector('.product');
-  updateSubtotal(singleProduct);
-  // end of test
-
-  // ITERATION 2
-  //... your code goes here
-
-  // ITERATION 3
-  //... your code goes here
+  const allProducts = document.querySelectorAll('.product');
+  let total = 0;
+  allProducts.forEach((product) => {
+    const subtotal = updateSubtotal(product);
+    total += parseFloat(subtotal.innerText);
+  });
+  document.querySelector('#total-value span').innerText = total;
 }
 
 // ITERATION 4
 
 function removeProduct(event) {
   const target = event.currentTarget;
-  console.log('The target in remove is:', target);
+  const row = target.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+  // console.log('The target in remove is:', target);
   //... your code goes here
 }
 
@@ -37,6 +45,15 @@ function createProduct() {
 window.addEventListener('load', () => {
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
-
+  addRemoveListener();
   //... your code goes here
 });
+
+function addRemoveListener() {
+  const allProducts = document.querySelectorAll('.product');
+  allProducts.forEach((product) => {
+    product
+      .querySelector('.btn-remove')
+      .addEventListener('click', removeProduct);
+  });
+}
